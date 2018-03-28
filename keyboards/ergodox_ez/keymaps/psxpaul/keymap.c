@@ -4,10 +4,15 @@
 #include "version.h"
 
 #define BASE 0 // default layer
-#define OSX 1 // OS X
-#define SYMB 2 // symbols
+#define SYMB 1 // symbols
 
 /**
+ * To sync with upstream:
+ *      git remote add upstream git@github.com:qmk/qmk_firmware.git     (if upstream is not already configured)
+ *      git fetch upstream
+ *      git merge upstream/master
+ *
+ *
  * Compile by running the following command from the root QMK directory:
  *
  *      docker run --user=$(id -u):$(id -g) -e keymap=psxpaul -e keyboard=ergodox_ez --rm -v $('pwd'):/qmk:rw edasque/qmk_firmware
@@ -28,18 +33,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | Tab    |   Q  |   W  |   E  |   R  |   T  | Home |           | PgUp |   Y  |   U  |   I  |   O  |   P  |   \    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  |   '    |
+ * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | Ctrl/' |
  * |--------+------+------+------+------+------|  End |           | PgDn |------+------+------+------+------+--------|
  * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  |  Shift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | Ctrl | LGui | ~L2  | Alt  |'_'/L2|                                       |'_'/L2|  Alt | ~L2  | RGui | Ctrl |
+ *   | Ctrl | LGui | LGui | Alt  |'_'/L1|                                       |'_'/L1|  Alt | RGui | RGui | Ctrl |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |   [  |   {  |       |  }   |   ]    |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |  L1  |       |  L1  |        |      |
  *                                 | Back |Delete|------|       |------| Insert |Enter |
- *                                 | Space|      |  L2  |       |  L2  |        |      |
+ *                                 | Space|      |  L1  |       |  L1  |        |      |
  *                                 `--------------------'       `----------------------'
  */
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
@@ -48,65 +53,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_HOME,
         CTL_T(KC_ESC),  KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSFT,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_END,
-        KC_LCTRL,       KC_LGUI,      MO(SYMB),       KC_LALT,LT(SYMB,KC_SPC),
+        KC_LCTRL,       KC_LGUI,      KC_LGUI,        KC_LALT,LT(SYMB,KC_SPC),
                                               KC_LBRC,        KC_LCBR,
-                                                              TO(OSX),
+                                                              TO(SYMB),
                                               KC_BSPC,KC_DELT,TO(SYMB),
         // right hand
              KC_EQL,      KC_6,   KC_7,  KC_8,   KC_9,    KC_0,             KC_MINS,
              KC_PGUP,     KC_Y,   KC_U,  KC_I,   KC_O,    KC_P,             KC_BSLS,
-                          KC_H,   KC_J,  KC_K,   KC_L,    KC_SCLN,          KC_QUOT,
+                          KC_H,   KC_J,  KC_K,   KC_L,    KC_SCLN,          CTL_T(KC_QUOT),
              KC_PGDN,     KC_N,   KC_M,  KC_COMM,KC_DOT,  KC_SLSH,          KC_RSFT,
-                        LT(SYMB,KC_SPC), KC_RALT,MO(SYMB),KC_RGUI,          KC_RCTRL,
+                        LT(SYMB,KC_SPC), KC_RALT,KC_RGUI, KC_RGUI,          KC_RCTRL,
              KC_RCBR,        KC_RBRC,
-             TO(OSX),
+             TO(SYMB),
              TO(SYMB),KC_INS, KC_ENT
     ),
-/* Keymap 1: OSX layer
- *
- * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |   `    |   1  |   2  |   3  |   4  |   5  |   ~  |           |   =  |   6  |   7  |   8  |   9  |   0  |   -    |
- * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | Tab    |   Q  |   W  |   E  |   R  |   T  | Home |           | PgUp |   Y  |   U  |   I  |   O  |   P  |   \    |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  |   '    |
- * |--------+------+------+------+------+------|  End |           | PgDn |------+------+------+------+------+--------|
- * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  |  Shift |
- * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | Ctrl |  Alt | ~L2  | LGui |'_'/L2|                                       |'_'/L2| RGui | ~L2  | Alt  | Ctrl |
- *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |   [  |   {  |       |  }   |   ]    |
- *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      |  L0  |       |  L0  |        |      |
- *                                 | Back |Delete|------|       |------| Insert |Enter |
- *                                 | Space|      |  L2  |       |  L2  |        |      |
- *                                 `--------------------'       `----------------------'
- */
-[OSX] = LAYOUT_ergodox(  // layer 1 : OSX
-        // left hand
-        KC_GRV,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TILD,
-        KC_TAB,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_HOME,
-        CTL_T(KC_ESC),  KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LSFT,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_END,
-        KC_LCTRL,       KC_LALT,      MO(SYMB),       KC_LGUI,LT(SYMB,KC_SPC),
-                                              KC_LBRC,        KC_LCBR,
-                                                              TO(BASE),
-                                              KC_BSPC,KC_DELT,TO(SYMB),
-        // right hand
-             KC_EQL,      KC_6,   KC_7,  KC_8,   KC_9,    KC_0,             KC_MINS,
-             KC_PGUP,     KC_Y,   KC_U,  KC_I,   KC_O,    KC_P,             KC_BSLS,
-                          KC_H,   KC_J,  KC_K,   KC_L,    KC_SCLN,          KC_QUOT,
-             KC_PGDN,     KC_N,   KC_M,  KC_COMM,KC_DOT,  KC_SLSH,          KC_RSFT,
-                        LT(SYMB,KC_SPC), KC_RALT,MO(SYMB),KC_RALT,          KC_RGUI,
-             KC_RCBR,        KC_RBRC,
-             TO(BASE),
-             TO(SYMB),KC_INS, KC_ENT
-    ),
-/* Keymap 2: Symbol Layer
+/* Keymap 1: Symbol Layer
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
- * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |  F11 |           |  F12 |  F6  |  F7  |  F8  |  F9  |  F10 |        |
+ * |         |  F1  |  F2  |  F3  |  F4  |  F5  |  F11 |           |  F12 |  F6  |  F7  |  F8  |  F9  |  F10 |        |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |         |      |      |  Up  |      |      |      |           | VolUp|      |  [   |  {   |   }  |   ]  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -114,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------|      |           | VolDn|------+------+------+------+------+--------|
  * |         |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | EPRM  |      |      |      |      |                                       |      |      |      |      |      |
+ *   |       |      |      |      |      |                                       |      |      |      |      |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       |      |      |
@@ -127,11 +91,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // SYMBOLS
 [SYMB] = LAYOUT_ergodox(
        // left hand
-       VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F11,
+       KC_TRNS,KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F11,
        KC_TRNS,KC_TRNS,KC_TRNS,KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,
        KC_TRNS,KC_TRNS,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,
        KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
-          EPRM,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        KC_TRNS,KC_TRNS,
                                                KC_TRNS,
                                KC_TRNS,KC_TRNS,KC_TRNS,
