@@ -1,10 +1,9 @@
 #include QMK_KEYBOARD_H
-#include "debug.h"
-#include "action_layer.h"
 #include "version.h"
 
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
+#define MDIA 2 // media keys
 
 /**
  * To sync with upstream:
@@ -15,12 +14,16 @@
  *
  * Compile by running the following command from the root QMK directory:
  *
- *      docker run --user=$(id -u):$(id -g) -e keymap=psxpaul -e keyboard=ergodox_ez --rm -v $('pwd'):/qmk:rw edasque/qmk_firmware
+ * 	make git-submodules
+ *      util/docker_build.sh ergodox_ez:psxpaul
  */
 
 enum custom_keycodes {
-  PLACEHOLDER = SAFE_RANGE, // can always be here
-  EPRM,
+#ifdef ORYX_CONFIGURATOR
+  EPRM = EZ_SAFE_RANGE,
+#else
+  EPRM = SAFE_RANGE,
+#endif
   VRSN,
   RGB_SLD
 };
@@ -134,28 +137,20 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    // dynamically generate these.
-    case EPRM:
-      if (record->event.pressed) {
+  if (record->event.pressed) {
+    switch (keycode) {
+      case EPRM:
         eeconfig_init();
-      }
-      return false;
-      break;
-    case VRSN:
-      if (record->event.pressed) {
+        return false;
+      case VRSN:
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
-      }
-      return false;
-      break;
-    case RGB_SLD:
-      if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_mode(1);
-        #endif
-      }
-      return false;
-      break;
+        return false;
+      #ifdef RGBLIGHT_ENABLE
+      case RGB_SLD:
+        rgblight_mode(1);
+        return false;
+      #endif
+    }
   }
   return true;
 }
@@ -167,19 +162,14 @@ void matrix_init_user(void) {
 #endif
 };
 
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {
-
-};
-
 // Runs whenever there is a layer state change.
-uint32_t layer_state_set_user(uint32_t state) {
+layer_state_t layer_state_set_user(layer_state_t state) {
   ergodox_board_led_off();
   ergodox_right_led_1_off();
   ergodox_right_led_2_off();
   ergodox_right_led_3_off();
 
-  uint8_t layer = biton32(state);
+  uint8_t layer = get_highest_layer(state);
   switch (layer) {
       case 0:
         #ifdef RGBLIGHT_COLOR_LAYER_0
@@ -234,7 +224,7 @@ uint32_t layer_state_set_user(uint32_t state) {
         ergodox_right_led_2_on();
         ergodox_right_led_3_on();
         #ifdef RGBLIGHT_COLOR_LAYER_7
-          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_6);
+          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_7);
         #endif
         break;
       default:
