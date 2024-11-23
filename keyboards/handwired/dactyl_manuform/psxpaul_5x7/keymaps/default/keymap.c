@@ -13,56 +13,6 @@
 #define TAB_L  LCTL(LSFT(KC_TAB))
 #define TAB_RO LCTL(LSFT(KC_T))
 
-// Tap Dance declarations
-enum {
-    TD_LCTL_FN,
-    TD_RCTL_FN,
-    TD_LALT_FN,
-    TD_RALT_FN,
-    TD_LGUI_FN,
-    TD_RGUI_FN,
-};
-
-void mod_dbl_finished(qk_tap_dance_state_t *state, void *user_data) {
-    switch(state->keycode) {
-        case TD(TD_LCTL_FN): register_code(KC_LCTL); break;
-	case TD(TD_RCTL_FN): register_code(KC_RCTL); break;
-	case TD(TD_LALT_FN): register_code(KC_LALT); break;
-	case TD(TD_RALT_FN): register_code(KC_RALT); break;
-	case TD(TD_LGUI_FN): register_code(KC_LGUI); break;
-	case TD(TD_RGUI_FN): register_code(KC_RGUI); break;
-    }
-
-    if (state->count > 1) {
-        layer_on(_FN);
-    }
-}
-
-void mod_dbl_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch(state->keycode) {
-        case TD(TD_LCTL_FN): unregister_code(KC_LCTL); break;
-	case TD(TD_RCTL_FN): unregister_code(KC_RCTL); break;
-	case TD(TD_LALT_FN): unregister_code(KC_LALT); break;
-	case TD(TD_RALT_FN): unregister_code(KC_RALT); break;
-	case TD(TD_LGUI_FN): unregister_code(KC_LGUI); break;
-	case TD(TD_RGUI_FN): unregister_code(KC_RGUI); break;
-    }
-
-    if (state->count > 1) {
-        layer_off(_FN);
-    }
-}
-
-// Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_LCTL_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-    [TD_RCTL_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-    [TD_LALT_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-    [TD_RALT_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-    [TD_LGUI_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-    [TD_RGUI_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mod_dbl_finished, mod_dbl_reset),
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_PSXPAUL_5x7(
         // left hand
@@ -71,9 +21,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    KC_ESC,     KC_A,    KC_S,    KC_D,   KC_F,   KC_G,
         _______,    KC_LSFT,    KC_Z,    KC_X,    KC_C,   KC_V,   KC_B,
                                                   _______, _______,
-                                                                 KC_BSPC, KC_DELT,
-                                                                          TD(TD_LCTL_FN), TD(TD_LALT_FN),
-                                                                          TD(TD_LGUI_FN), MO(_FN),
+                                                                 KC_BSPC, KC_DEL,
+                                                                          KC_LCTL, KC_LALT,
+                                                                          KC_LGUI, MO(_FN),
         // right hand
                       KC_6,    KC_7,    KC_8,     KC_9,     KC_0,     KC_MINS,    _______,
                       KC_Y,    KC_U,    KC_I,     KC_O,     KC_P,     KC_BSLS,    _______,
@@ -81,8 +31,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                       KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,    _______,
                                _______, _______,
                  KC_ENT, KC_SPC,
-        TD(TD_RALT_FN), TD(TD_RCTL_FN),
-        MO(_FN),  TD(TD_RGUI_FN)
+        KC_RALT, KC_RCTL,
+        MO(_FN),  KC_RGUI
     ),
 
     [_FN] = LAYOUT_PSXPAUL_5x7(
