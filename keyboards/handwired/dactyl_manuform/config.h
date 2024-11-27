@@ -28,3 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Enables This makes it easier for fast typists to use dual-function keys */
 #define PERMISSIVE_HOLD
+
+// Selects left/right handedness based on EEPROM bootloader (see readme for one-time flash command)
+#define EE_HANDS

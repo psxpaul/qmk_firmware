@@ -14,7 +14,7 @@
 #define TAB_RO LCTL(LSFT(KC_T))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_QWERTY] = LAYOUT_PSXPAUL_5x7(
+    [_QWERTY] = LAYOUT_5x7(
         // left hand
         _______,    KC_GRV,     KC_1,    KC_2,    KC_3,   KC_4,   KC_5,
         _______,    KC_TAB,     KC_Q,    KC_W,    KC_E,   KC_R,   KC_T,
@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(_FN),  KC_RGUI
     ),
 
-    [_FN] = LAYOUT_PSXPAUL_5x7(
+    [_FN] = LAYOUT_5x7(
         // left hand
         _______,   _______,   KC_F1,     KC_F2,      KC_F3,    KC_F4,     KC_F5,
         _______,   _______,   _______,   _______,    KC_UP,    _______,   KC_HOME,
