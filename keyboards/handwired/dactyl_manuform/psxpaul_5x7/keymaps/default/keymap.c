@@ -63,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,                                  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  XXXXXXX,  KC_PGUP,  XXXXXXX,    KC_UP,  XXXXXXX,  KC_HOME,                                  KC_PGUP,  KC_LBRC,  KC_LCBR,  KC_RCBR,  KC_RBRC,  XXXXXXX,  _______,
         _______,  XXXXXXX,  XXXXXXX,  KC_LEFT,  KC_DOWN,  KC_RGHT,   KC_SPC,                                  KC_LEFT,  KC_DOWN,    KC_UP,  KC_RGHT,  XXXXXXX,  XXXXXXX,  _______,
-        _______,  XXXXXXX,  KC_PGDN,  KC_VOLD,  KC_MUTE,  KC_VOLU,   KC_END,                                  KC_PGDN,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,
+        _______,  XXXXXXX,  KC_PGDN,  KC_VOLD,  KC_MUTE,  KC_VOLU,   KC_END,                                  KC_PGDN,  KC_LPRN,    KC_LT,    KC_GT,  KC_RPRN,  XXXXXXX,  _______,
                                       _______,  _______,                                                                _______,  _______,
                                                           _______,  _______,                                  _______,  _______,
                                                                     _______, _______,                _______, _______,
@@ -83,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_TAB] = LAYOUT_5x7(
         _______,  _______,  _______,  _______,  _______,  _______,  _______,                                  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,  XXXXXXX,  XXXXXXX,  G(KC_7),  G(KC_8),  G(KC_9),  XXXXXXX,                                  XXXXXXX,     KC_7,     KC_8,     KC_9,  KC_MINS,  XXXXXXX,  _______,
+        _______,G(KC_GRV),  XXXXXXX,  G(KC_7),  G(KC_8),  G(KC_9),  XXXXXXX,                                  XXXXXXX,     KC_7,     KC_8,     KC_9,  KC_MINS,  XXXXXXX,  _______,
         _______,  XXXXXXX,  XXXXXXX,  G(KC_4),  G(KC_5),  G(KC_6),  XXXXXXX,                                  XXXXXXX,     KC_4,     KC_5,     KC_6,  KC_PLUS,  XXXXXXX,  _______,
         _______,  XXXXXXX,  XXXXXXX,  G(KC_1),  G(KC_2),  G(KC_3),  XXXXXXX,                                     KC_0,     KC_1,     KC_2,     KC_3,   KC_EQL,  XXXXXXX,  _______,
                                       _______,  _______,                                                                _______,  _______,
