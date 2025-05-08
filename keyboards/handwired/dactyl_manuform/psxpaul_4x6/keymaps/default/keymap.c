@@ -63,20 +63,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NAV] = LAYOUT_4x6(
         XXXXXXX,  KC_PGUP,       XXXXXXX,          KC_UP,            XXXXXXX,          KC_HOME,                  KC_PGUP,  KC_LBRC,          KC_LCBR,        KC_RCBR,          KC_RBRC,          XXXXXXX,
         XXXXXXX,  XXXXXXX,       LALT_T(KC_LEFT),  LGUI_T(KC_DOWN),  LSFT_T(KC_RGHT),  KC_SPC,                   KC_LEFT,  RSFT_T(KC_DOWN),  RGUI_T(KC_UP),  RALT_T(KC_RGHT),  XXXXXXX,          XXXXXXX,
-        XXXXXXX,  KC_PGDN,       KC_VOLD,          KC_MUTE,          KC_VOLU,          KC_END,                   KC_PGDN,  KC_LT,            KC_LPRN,        KC_RPRN,          KC_GT,            XXXXXXX,
+        XXXXXXX,  KC_PGDN,       KC_VOLD,          KC_MUTE,          KC_VOLU,          KC_END,                   KC_PGDN,  KC_LPRN,          KC_LT,          KC_GT,            KC_RPRN,          XXXXXXX,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
     [_LNUM] = LAYOUT_4x6(
-        KC_GRV,   KC_EXLM,       KC_AT,            KC_HASH,          KC_DLR,           KC_PERC,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             KC_MINS,          XXXXXXX,
-        KC_TILD,  LCTL_T(KC_1),  LALT_T(KC_2),     LGUI_T(KC_3),     LSFT_T(KC_4),     KC_5,                     XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     RCTL_T(KC_PLUS),  XXXXXXX,
-        KC_F11,   KC_F1,         KC_F2,            KC_F3,            KC_F4,            KC_F5,                    KC_0,     KC_1,             KC_2,           KC_3,             KC_EQL,           XXXXXXX,
+        KC_GRV,   KC_EXLM,       KC_AT,            KC_HASH,          KC_DLR,           KC_PERC,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             KC_PMNS,          KC_MINS,
+        KC_TILD,  LCTL_T(KC_1),  LALT_T(KC_2),     LGUI_T(KC_3),     LSFT_T(KC_4),     KC_5,                     XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     RCTL_T(KC_PPLS),  KC_PLUS,
+        KC_F11,   KC_F1,         KC_F2,            KC_F3,            KC_F4,            KC_F5,                    KC_0,     KC_1,             KC_2,           KC_3,             KC_EQL,           KC_EQL,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
     [_RNUM] = LAYOUT_4x6(
       G(KC_GRV),  XXXXXXX,       KC_7,             KC_8,             KC_9,             KC_MINS,                  KC_CIRC,  KC_AMPR,          KC_ASTR,        KC_LPRN,          KC_RPRN,          KC_MINS,
         XXXXXXX,  XXXXXXX,       LALT_T(KC_4),     LGUI_T(KC_5),     LSFT_T(KC_6),     KC_PLUS,                  KC_6,     RSFT_T(KC_7),     RGUI_T(KC_8),   RALT_T(KC_9),     RCTL_T(KC_0),     KC_EQL,
         XXXXXXX,     KC_0,       KC_1,             KC_2,             KC_3,             KC_EQL,                   KC_F6,    KC_F7,            KC_F8,          KC_F9,            KC_F10,           KC_F12,
-                                                   _______,          _______,          _______,                  _______,  _______,          _______
+                                                   _______,          _______,          _______,                  _______,  QK_BOOT,          _______
     ),
 };
 
