@@ -1,3 +1,7 @@
+Link to onshape projects:
+    https://cad.onshape.com/documents/7f8587620c189b429d36b165/w/939478591eba55418e27dea9/e/07706a9968f21f081d2ca0f4 (left)
+    https://cad.onshape.com/documents/471dc58aa378af9f52cd9337/w/57eae4bdefaa70e6c7a43ae0/e/47b9801af1b60e2df998d693 (right)
+
 Install QMK:
     sudo pacman -S qmk
     make git-submodule
