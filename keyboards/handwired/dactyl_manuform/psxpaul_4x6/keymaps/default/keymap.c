@@ -6,8 +6,9 @@
 // entirely and just use numbers.
 #define _QWERTY 0
 #define _NAV    1
-#define _LNUM    2
-#define _RNUM    3
+#define _NUM    2
+#define _FUN    3
+#define _TAB    4
 
 // QWERTY HRMs
 #define HOME_A LCTL_T(KC_A)
@@ -20,12 +21,12 @@
 #define HOME_SC RCTL_T(KC_SCLN)
 
 // Thumb keys
-#define THUMB_L1 GUI_T(KC_BSPC)
-#define THUMB_L2 LT(_RNUM, KC_DEL)
+#define THUMB_L1 LT(_FUN, KC_BSPC)
+#define THUMB_L2 LT(_NUM, KC_DEL)
 #define THUMB_L3 LT(_NAV, KC_ESC)
 #define THUMB_R3 LT(_NAV, KC_TAB)
-#define THUMB_R2 LT(_LNUM, KC_ENT)
-#define THUMB_R1 GUI_T(KC_SPC)
+#define THUMB_R2 LT(_NUM, KC_ENT)
+#define THUMB_R1 LT(_FUN, KC_SPC)
 
 bool mod_state_lctl = false;
 bool mod_state_rctl = false;
@@ -66,17 +67,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,  KC_PGDN,       KC_VOLD,          KC_MUTE,          KC_VOLU,          KC_END,                   KC_PGDN,  KC_LPRN,          KC_LT,          KC_GT,            KC_RPRN,          XXXXXXX,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
-    [_LNUM] = LAYOUT_4x6(
-        KC_GRV,   KC_EXLM,       KC_AT,            KC_HASH,          KC_DLR,           KC_PERC,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             KC_PMNS,          KC_MINS,
-        KC_TILD,  LCTL_T(KC_1),  LALT_T(KC_2),     LGUI_T(KC_3),     LSFT_T(KC_4),     KC_5,                     XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     RCTL_T(KC_PPLS),  KC_PLUS,
-        KC_F11,   KC_F1,         KC_F2,            KC_F3,            KC_F4,            KC_F5,                    KC_0,     KC_1,             KC_2,           KC_3,             KC_EQL,           KC_EQL,
+    [_NUM] = LAYOUT_4x6(
+        KC_GRV,   XXXXXXX,       KC_AMPR,          KC_ASTR,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             XXXXXXX,          KC_MINS,
+        XXXXXXX,  KC_LCTL,       LALT_T(KC_DLR),   LGUI_T(KC_PERC),  LSFT_T(KC_CIRC),  XXXXXXX,                  XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     KC_RCTL,          KC_EQL,
+        XXXXXXX,  XXXXXXX,       KC_EXLM,          KC_AT,            KC_HASH,          XXXXXXX,                  KC_0,     KC_1,             KC_2,           KC_3,             XXXXXXX,          XXXXXXX,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
-    [_RNUM] = LAYOUT_4x6(
-      G(KC_GRV),  XXXXXXX,       KC_7,             KC_8,             KC_9,             KC_MINS,                  KC_CIRC,  KC_AMPR,          KC_ASTR,        KC_LPRN,          KC_RPRN,          KC_MINS,
-        XXXXXXX,  XXXXXXX,       LALT_T(KC_4),     LGUI_T(KC_5),     LSFT_T(KC_6),     KC_PLUS,                  KC_6,     RSFT_T(KC_7),     RGUI_T(KC_8),   RALT_T(KC_9),     RCTL_T(KC_0),     KC_EQL,
-        XXXXXXX,     KC_0,       KC_1,             KC_2,             KC_3,             KC_EQL,                   KC_F6,    KC_F7,            KC_F8,          KC_F9,            KC_F10,           KC_F12,
+    [_FUN] = LAYOUT_4x6(
+        XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  KC_F7,            KC_F8,          KC_F9,            XXXXXXX,          KC_F10,
+        XXXXXXX,  MS_BTN4,       MS_BTN5,          OSL(_TAB),        G(KC_F),          XXXXXXX,                  XXXXXXX,  RSFT_T(KC_F4),    RGUI_T(KC_F5),  RALT_T(KC_F6),    KC_RCTL,          KC_F11,
+        XXXXXXX,  G(KC_Z),       G(KC_X),          G(KC_C),          G(KC_V),          XXXXXXX,                  XXXXXXX,  KC_F1,            KC_F2,          KC_F3,            XXXXXXX,          KC_F12,
                                                    _______,          _______,          _______,                  _______,  QK_BOOT,          _______
+    ),
+    [_TAB] = LAYOUT_4x6(
+        XXXXXXX,  XXXXXXX,       G(KC_7),          G(KC_8),          G(KC_9),          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX,  XXXXXXX,       G(KC_4),          G(KC_5),          G(KC_6),          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
+        XXXXXXX,  XXXXXXX,       G(KC_1),          G(KC_2),          G(KC_3),          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
+                                                   _______,          _______,          _______,                  _______,  XXXXXXX,          _______
     ),
 };
 
@@ -92,6 +99,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case HOME_K: mod_state_rgui = true; break;
             case HOME_L: mod_state_ralt = true; break;
             case HOME_SC: mod_state_rctl = true; break;
+            case LALT_T(KC_DLR):
+                if(record->tap.count) {
+                    tap_code16(KC_DLR);
+                    return false;
+                }
+                break;
+            case LGUI_T(KC_PERC):
+                if(record->tap.count) {
+                    tap_code16(KC_PERC);
+                    return false;
+                }
+                break;
+            case LSFT_T(KC_CIRC):
+                if(record->tap.count) {
+                    tap_code16(KC_CIRC);
+                    return false;
+                }
+                break;
         }
         return true;
     } else if (IS_LAYER_ON(_QWERTY)) {
