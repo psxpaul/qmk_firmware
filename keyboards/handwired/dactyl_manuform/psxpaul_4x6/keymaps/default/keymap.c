@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_4x6(
         KC_TAB,   KC_Q,          KC_W,             KC_E,             KC_R,             KC_T,                     KC_Y,     KC_U,             KC_I,           KC_O,             KC_P,             KC_BSLS,
         KC_ESC,   HOME_A,        HOME_S,           HOME_D,           HOME_F,           KC_G,                     KC_H,     HOME_J,           HOME_K,         HOME_L,           HOME_SC,          KC_QUOT,
-        KC_LSFT,  KC_Z,          KC_X,             KC_C,             KC_V,             KC_B,                     KC_N,     KC_M,             KC_COMM,        KC_DOT,           KC_SLSH,          KC_RSFT,
+        KC_LSFT,  LT(_TAB, KC_Z),KC_X,             KC_C,             KC_V,             KC_B,                     KC_N,     KC_M,             KC_COMM,        KC_DOT,           KC_SLSH,          KC_RSFT,
                                                    THUMB_L1,         THUMB_L2,         THUMB_L3,                 THUMB_R3, THUMB_R2,         THUMB_R1
     ),
     [_NAV] = LAYOUT_4x6(
@@ -75,8 +75,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_FUN] = LAYOUT_4x6(
         XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  KC_F7,            KC_F8,          KC_F9,            XXXXXXX,          KC_F10,
-        XXXXXXX,  MS_BTN4,       MS_BTN5,          OSL(_TAB),        G(KC_F),          XXXXXXX,                  XXXXXXX,  RSFT_T(KC_F4),    RGUI_T(KC_F5),  RALT_T(KC_F6),    KC_RCTL,          KC_F11,
-        XXXXXXX,  G(KC_Z),       G(KC_X),          G(KC_C),          G(KC_V),          XXXXXXX,                  XXXXXXX,  KC_F1,            KC_F2,          KC_F3,            XXXXXXX,          KC_F12,
+        XXXXXXX,  MS_BTN4,       MS_BTN5,          XXXXXXX,          G(KC_F),          XXXXXXX,                  XXXXXXX,  RSFT_T(KC_F4),    RGUI_T(KC_F5),  RALT_T(KC_F6),    KC_RCTL,          KC_F11,
+        KC_LSFT,  G(KC_Z),       G(KC_X),          G(KC_C),          G(KC_V),          XXXXXXX,                  XXXXXXX,  KC_F1,            KC_F2,          KC_F3,            XXXXXXX,          KC_F12,
                                                    _______,          _______,          _______,                  _______,  QK_BOOT,          _______
     ),
     [_TAB] = LAYOUT_4x6(
