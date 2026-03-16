@@ -24,8 +24,8 @@
 // Thumb keys
 #define THUMB_L1 LT(_SYM, KC_BSPC)
 #define THUMB_L2 LT(_NUM, KC_DEL)
-#define THUMB_L3 LT(_NAV, KC_ESC)
-#define THUMB_R3 LT(_NAV, KC_TAB)
+#define THUMB_L3 LT(_NAV, MS_BTN1)
+#define THUMB_R3 LT(_NAV, MS_BTN1)
 #define THUMB_R2 LT(_NUM, KC_ENT)
 #define THUMB_R1 LT(_SYM, KC_SPC)
 
@@ -56,9 +56,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_MOUSE] = LAYOUT_4x6(
         XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
-        XXXXXXX,  XXXXXXX,       MS_BTN1,          MS_BTN2,          MS_BTN3,          XXXXXXX,                  XXXXXXX,  MS_BTN1,          MS_BTN2,        MS_BTN3,          XXXXXXX,          XXXXXXX,
         XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
-                                                   _______,          _______,          _______,                  _______,  _______,          _______
+        MS_BTN3,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          MS_BTN2,
+                                                   XXXXXXX,          XXXXXXX,          _______,                  _______,  XXXXXXX,          XXXXXXX
     )
 };
 
@@ -66,14 +66,20 @@ void keyboard_post_init_user(void) {
     // debug_enable = true;
 
     pointing_device_set_cpi_on_side(true, 100); //Set cpi on left side to a low value for slower scrolling.
-    pointing_device_set_cpi_on_side(false, 1500); //Set cpi on right side to a reasonable value for mousing.
+    pointing_device_set_cpi_on_side(false, 2000); //Set cpi on right side to a reasonable value for mousing.
     set_auto_mouse_layer(_MOUSE);
     set_auto_mouse_enable(true);
 }
 
 report_mouse_t pointing_device_task_combined_user(report_mouse_t left_report, report_mouse_t right_report) {
-    left_report.h = left_report.x;
-    left_report.v = -1 * left_report.y;
+    // MacOS only allows vertical/horizontal scrolling at a time, so limit it to one or the other
+    // if (left_report.y >= left_report.x) {
+        left_report.v = -1 * left_report.y;
+        left_report.h = 0;
+    // } else {
+        // left_report.v = 0;
+        // left_report.h = (left_report.x / 50);
+    // }
     left_report.x = 0;
     left_report.y = 0;
 

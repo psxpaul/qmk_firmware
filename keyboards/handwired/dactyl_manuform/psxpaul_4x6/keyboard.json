@@ -15,8 +15,9 @@
         "pin": "D3"
     },
     "features": {
-        "bootmagic": false,
-        "command": true,
+        "bootmagic": true,
+        "caps_word": true,
+        "command": false,
         "console": false,
         "extrakey": true,
         "mousekey": true,

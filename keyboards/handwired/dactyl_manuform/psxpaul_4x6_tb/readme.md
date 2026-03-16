@@ -37,12 +37,12 @@ ROW2 <=> GP13
 ROW3 <=> GP14
 ROW4 <=> GP15
 
-COL1 <=> GP21
-COL2 <=> GP20
-COL3 <=> GP19
-COL4 <=> GP18
-COL5 <=> GP17
-COL6 <=> GP16
+COL1 <=> GP16
+COL2 <=> GP17
+COL3 <=> GP18
+COL4 <=> GP19
+COL5 <=> GP20
+COL6 <=> GP21
 ```
 
 TRRS to RP2040
@@ -75,8 +75,8 @@ To compile:
 
 To flash:
 
-    qmk flash -kb handwired/dactyl_manuform/psxpaul_4x6_tb -km default
-
+    qmk flash -kb handwired/dactyl_manuform/psxpaul_4x6_tb -km default -bl uf2-split-left
+    (for flashing the left half - this reset eeprom, so always use left/right bootloader)
    *important: do not use a hub/dock while flashing!*
 
 
@@ -86,4 +86,4 @@ Enter the bootloader in 3 ways:
 
 * **Bootmagic reset**: Hold down the key at (0,0) in the matrix (usually the top left key or Escape) and plug in the keyboard
 * **Physical reset button**: Hold the boot button when plugging in the device
-* **Keycode in layout**: Press the key mapped to `QK_BOOT` if it is available
+* **Keycode in layout**: Press the key mapped to `QK_BOOT` (0,0 key)
