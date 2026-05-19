@@ -29,6 +29,9 @@
 #define THUMB_R2 LT(_NUM, KC_ENT)
 #define THUMB_R1 LT(_SYM, KC_SPC)
 
+float scroll_accumulated_h = 0;
+float scroll_accumulated_v = 0;
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_4x6(
         KC_TAB,   KC_Q,          KC_W,             KC_E,             KC_R,             KC_T,                     KC_Y,     KC_U,             KC_I,           KC_O,             KC_P,             KC_BSLS,
@@ -43,47 +46,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
     [_NUM] = LAYOUT_4x6(
-      G(KC_GRV),  XXXXXXX,       KC_7,             KC_8,             KC_9,             KC_MINS,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             KC_PMNS,          KC_MINS,
-        XXXXXXX,  XXXXXXX,       LALT_T(KC_4),     LGUI_T(KC_5),     LSFT_T(KC_6),     KC_PLUS,                  XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     RCTL_T(KC_PPLS),  KC_PLUS,
-        XXXXXXX,     KC_0,       KC_1,             KC_2,             KC_3,             KC_EQL,                   KC_0,     KC_1,             KC_2,           KC_3,             KC_EQL,           KC_EQL,
+      G(KC_GRV),  XXXXXXX,       KC_7,             KC_8,             KC_9,             XXXXXXX,                  XXXXXXX,  KC_7,             KC_8,           KC_9,             XXXXXXX,          XXXXXXX,
+        XXXXXXX,  KC_LCTL,       LALT_T(KC_4),     LGUI_T(KC_5),     LSFT_T(KC_6),     XXXXXXX,                  XXXXXXX,  RSFT_T(KC_4),     RGUI_T(KC_5),   RALT_T(KC_6),     KC_RCTL,          XXXXXXX,
+        XXXXXXX,     KC_0,       KC_1,             KC_2,             KC_3,             XXXXXXX,                  KC_0,     KC_1,             KC_2,           KC_3,             XXXXXXX,          XXXXXXX,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
     [_NAV] = LAYOUT_4x6(
         XXXXXXX,  KC_PGUP,       XXXXXXX,          KC_UP,            XXXXXXX,          KC_HOME,                  KC_PGUP,  KC_LBRC,          KC_LCBR,        KC_RCBR,          KC_RBRC,          XXXXXXX,
-        XXXXXXX,  XXXXXXX,       LALT_T(KC_LEFT),  LGUI_T(KC_DOWN),  LSFT_T(KC_RGHT),  KC_SPC,                   KC_LEFT,  RSFT_T(KC_DOWN),  RGUI_T(KC_UP),  RALT_T(KC_RGHT),  XXXXXXX,          XXXXXXX,
+        XXXXXXX,  KC_LCTL,       LALT_T(KC_LEFT),  LGUI_T(KC_DOWN),  LSFT_T(KC_RGHT),  KC_SPC,                   KC_LEFT,  RSFT_T(KC_DOWN),  RGUI_T(KC_UP),  RALT_T(KC_RGHT),  KC_RCTL,          XXXXXXX,
         XXXXXXX,  KC_PGDN,       KC_VOLD,          KC_MUTE,          KC_VOLU,          KC_END,                   KC_PGDN,  KC_LPRN,          KC_LT,          KC_GT,            KC_RPRN,          XXXXXXX,
                                                    _______,          _______,          _______,                  _______,  _______,          _______
     ),
     [_MOUSE] = LAYOUT_4x6(
-        XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
-        XXXXXXX,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          XXXXXXX,
-        MS_BTN3,  XXXXXXX,       XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                  XXXXXXX,  XXXXXXX,          XXXXXXX,        XXXXXXX,          XXXXXXX,          MS_BTN2,
-                                                   XXXXXXX,          XXXXXXX,          _______,                  _______,  XXXXXXX,          XXXXXXX
+        _______,  _______,       _______,          _______,          _______,          _______,                  _______,  _______,          _______,        _______,          _______,          _______,
+        _______,  _______,       _______,          _______,          _______,          _______,                  _______,  _______,          _______,        _______,          _______,          _______,
+        _______,  _______,       MS_BTN2,          MS_BTN3,          MS_BTN1,          _______,                  _______,  MS_BTN1,          MS_BTN3,        MS_BTN2,          _______,          _______,
+                                                   _______,          _______,          _______,                  _______,  _______,          _______
     )
 };
 
 void keyboard_post_init_user(void) {
-    // debug_enable = true;
-
-    pointing_device_set_cpi_on_side(true, 100); //Set cpi on left side to a low value for slower scrolling.
-    pointing_device_set_cpi_on_side(false, 2000); //Set cpi on right side to a reasonable value for mousing.
+    pointing_device_set_cpi_on_side(true, 2000);
+    pointing_device_set_cpi_on_side(false, 2000);
     set_auto_mouse_layer(_MOUSE);
     set_auto_mouse_enable(true);
 }
 
 report_mouse_t pointing_device_task_combined_user(report_mouse_t left_report, report_mouse_t right_report) {
-    // MacOS only allows vertical/horizontal scrolling at a time, so limit it to one or the other
-    // if (left_report.y >= left_report.x) {
+    // MacOS only allows vertical/horizontal scrolling at a time, so limit it to one or the other based on the dominant axis of movement.
+    // The non-dominant axis is set to 0 to prevent diagonal scrolling.
+
+    if (abs(left_report.y) >= abs(left_report.x)) {
         left_report.v = -1 * left_report.y;
         left_report.h = 0;
-    // } else {
-        // left_report.v = 0;
-        // left_report.h = (left_report.x / 50);
-    // }
+    } else {
+        left_report.v = 0;
+        left_report.h = left_report.x;
+    }
+
+    scroll_accumulated_h += (float)left_report.h / 32;
+    scroll_accumulated_v += (float)left_report.v / 32;
+    left_report.h = (int8_t)scroll_accumulated_h;
+    left_report.v = (int8_t)scroll_accumulated_v;
+    scroll_accumulated_h -= (int8_t)scroll_accumulated_h;
+    scroll_accumulated_v -= (int8_t)scroll_accumulated_v;
+
     left_report.x = 0;
     left_report.y = 0;
-
-    dprintf("Combining mouse reports(h: %d|%d, v: %d|%d)", left_report.h, right_report.h, left_report.v, right_report.v);
 
     return pointing_device_combine_reports(left_report, right_report);
 }
